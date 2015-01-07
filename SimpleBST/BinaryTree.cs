@@ -50,6 +50,10 @@ namespace SimpleBST
             throw new System.ArgumentOutOfRangeException("data", "Couldn't find " + data.ToString() + " in the BST");
         }
 
+        /// <summary>
+        /// Adds a new node to the BST in the proper place
+        /// </summary>
+        /// <param name="data"></param>
         public void AddNode(TData data)
         {
             if (this.data.CompareTo(data) == 0)
@@ -78,6 +82,52 @@ namespace SimpleBST
                     this.left.AddNode(data);
                 }
             }
+        }
+
+        public void RemoveNode(TData data)
+        {
+            BinaryTree<TData> node = FindNode(data);
+            BinaryTree<TData> parent = FindParent(data);
+        }
+
+        public int NumberOfChildren()
+        {
+            int i = 0;
+            if (left != null)
+                i++;
+            if (right != null)
+                i++;
+            return i;
+        }
+
+        public bool IsParentOf(TData data)
+        {
+            if(left != null)
+            {
+                if (this.data.CompareTo(left.Data) == 0)
+                    return true;
+            }
+            if(right != null)
+            {
+                if (this.data.CompareTo(right.Data) == 0)
+                    return true;
+            }
+            return false;
+        }
+
+        private BinaryTree<TData> FindParent(TData data)
+        {
+            if (this.IsParentOf(data))
+            {
+                return this;
+            }
+
+            else if (this.data.CompareTo(data) < 0 && this.right != null)
+                return this.right.FindParent(data);
+            else if (this.data.CompareTo(data) > 0 && this.left != null)
+                return this.left.FindParent(data);
+
+            throw new System.ArgumentOutOfRangeException("data", "Couldn't find " + data.ToString() + " in the BST");
         }
     }
 }
